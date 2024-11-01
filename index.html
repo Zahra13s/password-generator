@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="176506.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- css -->
+    <link rel="stylesheet" href="style.css">
+    <title>Password Generator</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Password Generator</h1>
+        <div class="input-form">
+            <p id="display">XXXXXXXX</p>
+            <div class="strong">
+                <ul class="">
+                    <li id="first"></li>
+                    <li id="second"></li>
+                    <li id="third"></li>
+                    <li id="fourth"></li>
+                </ul>
+                <small id="expression"></small>
+            </div>
+            <label for="">Password Length</label>
+            <input type="range" onchange="Generate(event)" name="" placeholder="Enter your Password" id="length" min="0"
+                max="25">
+           
+            <div class=""><input type="checkbox" name="" id="numbers">Include Numbers</div>
+           <div class=""> <input type="checkbox" name="" id="specialCharacters">Include Special Characters</div>
+        </div>
+    </div>
+</body>
+<script src="app.js"></script>
+<script>
+
+    let length = document.querySelector("#length");
+    let numbers = document.querySelector("#numbers");
+    let specialCharacters = document.querySelector("#specialCharacters");
+    let display = document.querySelector("#display");
+    let first = document.querySelector("#first");
+    let second = document.querySelector("#second")
+    let third = document.querySelector("#third")
+    let fourth = document.querySelector("#fourth")
+    let expression = document.querySelector("#expression")
+
+    function Generate(event) {
+        let lengthValue = length.value;
+        const isNumChecked = numbers.checked;
+        const isSpecialChar = specialCharacters.checked;
+        let password = []
+        console.log(lengthValue);
+
+        const capitalAlphabets = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const capitalAlphabetsIndex = Math.floor(Math.random() * capitalAlphabets.length);
+        password.push(capitalAlphabets[capitalAlphabetsIndex])
+
+        while (password.length < lengthValue - 1) {
+            const alphabets = 'abcdefghijklmnopqrstuvwxyz';
+            const alphabetIndex = Math.floor(Math.random() * alphabets.length);
+            password.push(alphabets[alphabetIndex])
+
+
+            if (isNumChecked) {
+                const numbers = '0123456789';
+                const numberIndex = Math.floor(Math.random() * numbers.length);
+                password.push(numbers[numberIndex])
+            }
+
+            if (isSpecialChar) {
+                const specialCharacters = '~@#$%^&*()_+\|';
+                const specialCharacter = Math.floor(Math.random() * specialCharacters.length);
+                password.push(specialCharacters[specialCharacter]);
+            }
+        }
+        display.innerHTML = password.join("")
+
+        if (password.length < 8 && !isNumChecked && !isSpecialChar) {
+            first.style.backgroundColor = "red";
+            second.style.backgroundColor = "grey";
+            third.style.backgroundColor = "grey";
+            fourth.style.backgroundColor = "grey";
+            expression.innerHTML = "Super Weak";
+            expression.style.color = "red"
+        }  else if (password.length >= 8 && (!isNumChecked && !isSpecialChar)) {
+            first.style.backgroundColor = "orange";
+            second.style.backgroundColor = "orange";
+            third.style.backgroundColor = "grey";
+            fourth.style.backgroundColor = "grey";
+            expression.innerHTML = "Still Weak";
+            expression.style.color = "orange"
+        }else if (password.length < 8 && (isNumChecked || isSpecialChar)) {
+            first.style.backgroundColor = "darkgoldenrod";
+            second.style.backgroundColor = "darkgoldenrod";
+            third.style.backgroundColor = "darkgoldenrod";
+            fourth.style.backgroundColor = "grey";
+            expression.innerHTML = "Medium";
+            expression.style.color = "darkgoldenrod"
+        } else if ((isNumChecked && isSpecialChar) && password.length >= 8) {
+            first.style.backgroundColor = "green";
+            second.style.backgroundColor = "green";
+            third.style.backgroundColor = "green";
+            fourth.style.backgroundColor = "green";
+            expression.innerHTML = "Strong";
+            expression.style.color = "green"
+        }
+
+
+    }
+
+
+
+</script>
+
+</html>
